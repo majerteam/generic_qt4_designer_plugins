@@ -32,6 +32,7 @@ class SimpleLauncherPlugin(plugin_class):
     WIDGET_CLASS = None
     WIDGET_NAME = "Dummy, don't use"
     def __init__(self, parent=None):
+        debug("__init__")
         super(SimpleLauncherPlugin, self).__init__(parent)
 
         self._initialized = False
@@ -55,18 +56,41 @@ class SimpleLauncherPlugin(plugin_class):
         return self.IS_CONTAINER
 
     def group(self):
-        return "Launcher"
+        return "Example plugins"
 
     def includeFile(self):
         return self.INCLUDEFILE
 
+    def icon(self):
+        return self._icon
+
+    def toolTip(self):
+        return self._toolTip
+
+    def whatsThis(self):
+        return self._whatsThis
+
     def domXml(self):
-        return '<widget class="%s" name="%s">\n' \
-               '</widget>\n' % (self.WIDGET_NAME, self.ATTR_NAME)
+        domXml ='<widget class="%s" name="%s">\n' % (self.WIDGET_NAME,
+                                                     self.ATTR_NAME)
+
+        if self._toolTip:
+            domXml += '<property name="toolTip">\n' \
+                      '  <string>%s</string>\n' \
+                      '</property>\n' % self._toolTip
+
+        if self._whatsThis:
+            domXml += '<property name="whatsThis">\n' \
+                      '  <string>%s</string>\n' \
+                      '</property>\n' % self._whatsThis
+
+        domXml += '</widget>\n'
+        debug(domXml)
+        return domXml
 
 
-def plugin(widget_class, attr_name, include, bases=(SimpleLauncherPlugin,),
-    container=False):
+def plugin(widget_class, attr_name, include, icon="", toolTip="",
+           whatsThis="", bases=(SimpleLauncherPlugin,), container=False):
     widget_name = widget_class.__name__
     class_dict = {
         "ATTR_NAME": attr_name,
@@ -74,5 +98,8 @@ def plugin(widget_class, attr_name, include, bases=(SimpleLauncherPlugin,),
         "IS_CONTAINER": container,
         "WIDGET_CLASS": widget_class,
         "WIDGET_NAME": widget_name,
+        "_icon": icon,
+        "_toolTip": toolTip,
+        "_whatsThis": whatsThis
         }
     return type('%sPlugin' % widget_name, bases, class_dict)

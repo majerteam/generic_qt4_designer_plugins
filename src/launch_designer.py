@@ -44,7 +44,8 @@
 ###
 
 
-import os
+from os import environ
+from os.path import join, dirname, abspath
 import sys
 from PyQt4 import QtCore, QtGui
 
@@ -61,11 +62,14 @@ app = QtGui.QApplication(sys.argv)
 
 # Tell Qt Designer where it can find the directory containing the plugins and
 # Python where it can find the widgets.
-env = os.environ.copy()
-# one last tweak: env['PYQTDESIGNERPATH'] = 'plugins' changed to use
+env = environ.copy()
+
+# one last tweak: PYQTDESIGNERPATH & PYTHONPATH changed to use
 # absolute path
-env['PYQTDESIGNERPATH'] = os.path.join(os.getcwd(), 'main')
-#env['PYTHONPATH'] = 'widgets'
+repo_root = abspath(dirname(__file__))
+env['PYQTDESIGNERPATH'] = join(repo_root, 'plugins')
+env['PYTHONPATH'] = join(repo_root, 'src', 'widgets')
+
 qenv = ['%s=%s' % (name, value) for name, value in env.items()]
 
 # Start Designer.
@@ -83,4 +87,3 @@ designer.start(designer_bin)
 designer.waitForFinished(-1)
 
 exit(designer.exitCode())
-
