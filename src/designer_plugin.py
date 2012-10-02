@@ -11,19 +11,29 @@ License: This file is released under the GPLv3
 # won't aknowledge this as a plugin
 from PyQt4 import QtDesigner
 
-# Importing the plugin wrapper
-from designer import plugin
+LOGFILE = "/tmp/generic_qt4_plugins.log"
 
-# Below, list all the widget classes imports.
-# If in launcher_designer.py the PYTHONPATH is set to the directory containing
-# the widget classes, the import can be done like:
-from widget_class import PyWidgetClass
+# For debugging purposes, we're wrapping all of this file inside a try: except:
+import traceback
+try:
+    # Importing the plugin wrapper
+    from designer import plugin
 
-# It can also be done like the following (for instance if module is installed):
-#from module.widgets.widget_class import PyWidgetClass
+    # Below, list all the widget classes imports.
+    # If in launcher_designer.py the PYTHONPATH is set to the directory
+    # containing the widget classes, the import can be done like:
+    from widget_class import PyWidgetClass
 
-# The _include part must be thought through carefully, since it will be used in
-# the generated (from the .ui) python file. It depends on where you'll keep the
-# .ui of the widget that will include the plugin.
-_INCLUDE = 'module.widgets.base_class'
-ANALOG_CLOCK = plugin(PyWidgetClass, "widgetClass", _INCLUDE)
+    # It can also be done like the following (for instance if module is
+    # installed):
+    #from module.widgets.widget_class import PyWidgetClass
+
+    # The _include part must be thought through carefully, since it will be
+    # used in the generated (from the .ui) python file. It depends on where
+    # you'll keep the .ui of the widget that will include the plugin.
+    _INCLUDE = 'module.widgets.base_class'
+    WIDGET_PLUGIN = plugin(PyWidgetClass, "widgetClass", _INCLUD)
+
+except Exception, e:
+    with open(LOGFILE, "a") as handle:
+        traceback.print_exc(file=handle)
