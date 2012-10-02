@@ -20,10 +20,10 @@ from designer import plugin
 from widget_class import PyWidgetClass
 
 # It can also be done like the following (for instance if module is installed):
-from module.widgets.widget_class import PyWidgetClass
+#from module.widgets.widget_class import PyWidgetClass
 
 # The _include part must be thought through carefully, since it will be used in
 # the generated (from the .ui) python file. It depends on where you'll keep the
 # .ui of the widget that will include the plugin.
 _INCLUDE = 'module.widgets.base_class'
-ANALOG_CLOCK = plugin(PyAnalogClock, "analogClock", _INCLUDE)
+ANALOG_CLOCK = plugin(PyWidgetClass, "widgetClass", _INCLUDE)
