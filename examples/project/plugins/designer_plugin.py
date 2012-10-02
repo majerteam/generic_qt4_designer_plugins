@@ -24,7 +24,7 @@ try:
     # generated (from the .ui) python file. It depends on where you'll keep the
     # .ui of the widget that will include the plugin.
     _INCLUDE = 'widgets.analogclock'
-    ANALOG_CLOCK = plugin(PyAnalogClock, "analogClock", _INCLUD)
+    ANALOG_CLOCK = plugin(PyAnalogClock, "analogClock", _INCLUDE)
 
 except Exception, e:
     with open(LOGFILE, "a") as handle:
